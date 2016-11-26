@@ -5,6 +5,7 @@
 # and https://github.com/ajinabraham/Xenotix-Python-Keylogger
 
 import keyboard
+import notify2
 import pyttsx
 import threading
 import re
@@ -15,6 +16,8 @@ tts = pyttsx.init()
 
 tts_thread = threading.Thread(target=tts.startLoop)
 tts_thread.start()
+
+notify2.init("app")
 
 words = [
     (["linux", "ubuntu", "fedora", "open.source", "free.software", "richard.stallman"],
@@ -68,11 +71,20 @@ def check_buffer():
 
 
 def on_linux():
-    say("Linux is a cancer that attaches itself in an intellectual property sense to everything it touches.")
+    keyboard.press_and_release('ctrl+w')
+    notify("Microsoft™ Advanced Business Model Threat Protection",
+           "Microsoft has detected a threat and has cleaned your computer. Your credit card has been charged for this service.")
 
 
 def on_windows_bad():
     say("Please remember that microsoft loves you.")
+
+
+def notify(title, msg):
+    n = notify2.Notification(title, msg, "warn")
+    n.set_timeout(2)
+    n.show()
+
 
 def say(msg):
     global tts
