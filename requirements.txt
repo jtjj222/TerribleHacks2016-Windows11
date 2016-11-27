@@ -3,3 +3,4 @@ tendo
 git+https://github.com/jpercent/pyttsx
 setuptools
 plyer
+flask
