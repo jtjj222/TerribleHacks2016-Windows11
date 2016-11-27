@@ -1,4 +1,5 @@
 keyboard
 tendo
-git+https://github.com/westonpace/pyttsx
-notify2
+git+https://github.com/jpercent/pyttsx
+setuptools
+plyer

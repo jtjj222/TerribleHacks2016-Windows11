@@ -5,19 +5,13 @@
 # and https://github.com/ajinabraham/Xenotix-Python-Keylogger
 
 import keyboard
-import notify2
-import pyttsx
-import threading
+from plyer import notification
 import re
-from tendo import singleton
 
-me = singleton.SingleInstance() # Make sure only one instance is run
-tts = pyttsx.init()
-
-tts_thread = threading.Thread(target=tts.startLoop)
-tts_thread.start()
-
-notify2.init("app")
+import sys
+import traceback
+from functools import wraps
+from multiprocessing import Process, Queue
 
 words = [
     (["linux", "ubuntu", "fedora", "open.source", "free.software", "richard.stallman"],
@@ -44,10 +38,7 @@ def main():
     keyboard.wait('')
 
     tts.stop()
-    tts.endLoop()
-    tts_thread.join()
     say("Windows 11 has encountered an unexpected error and needs to close.")
-    tts.runAndWait()
 
 
 def on_keypress(evt):
@@ -81,15 +72,21 @@ def on_windows_bad():
 
 
 def notify(title, msg):
-    n = notify2.Notification(title, msg, "warn")
-    n.set_timeout(2)
-    n.show()
+    notification.notify(title=title, message=msg)
 
+
+def _say_process(msg):
+    import pyttsx
+    tts = pyttsx.init()
+    tts.setProperty('rate', 150)
+    tts.say(msg)
+    tts.runAndWait()
 
 def say(msg):
-    global tts
-    print(msg)
-    tts.say(msg)
+    p = Process(target=_say_process, args=(msg,))
+    p.start()
+    p.join()
 
 
-main()
+if __name__=="__main__":
+    main()
