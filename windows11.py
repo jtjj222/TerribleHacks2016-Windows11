@@ -68,6 +68,9 @@ def on_linux():
 
 
 def on_windows_bad():
+    for i in range(0,50): keyboard.press_and_release("backspace")
+    notify("Microsoft™ Idea Piracy Protection Activated",
+           "Microsoft™ Idea Piracy Protection has protected you from unlawfully using Microsoft's intellectual property")
     say("Please remember that microsoft loves you.")
 
 
